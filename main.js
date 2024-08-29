@@ -1,4 +1,4 @@
-const URL='https://api.thecatapi.com/v1/images/search?limit=3';
+const URL='https://api.thecatapi.com/v1/images/search?limit=3&api_key=live_YzDCYYUgq891AmGLVjNN5H5tKToPdPyQTVHNXTt2koJV3ypiQNlpykfiviGfmtQH';
 
 async function LoadCatImage(){
     try{
