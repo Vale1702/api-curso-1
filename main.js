@@ -2,7 +2,10 @@ const URL_RANDOM='https://api.thecatapi.com/v1/images/search?limit=3&api_key=liv
 
 const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites?&api_key=live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd';
 
+const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}?api_key=live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd`;
+
 const spanError = document.getElementById('error')
+
 async function loadRandomMichis(){
     try{
         const res = await fetch (URL_RANDOM);
@@ -12,10 +15,18 @@ async function loadRandomMichis(){
         const img1 = document.getElementById('img1');
         const img2 = document.getElementById('img2');
         const img3 = document.getElementById('img3');
+
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        const btn3 = document.getElementById('btn3');
         
         img1.src = data [0].url;
         img2.src = data [1].url;
         img3.src = data [2].url;
+
+        btn1.onclick = () => saveFavoriteMichi(data[0].id);
+        btn2.onclick = () => saveFavoriteMichi(data[1].id);
+        btn3.onclick = () => saveFavoriteMichi(data[2].id);
 
         document.getElementById('reloadButton').onclick= function(){
         location.reload();
@@ -33,13 +44,26 @@ async function loadFavoriteMichis() {
                 'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
             }
         });
-
         // Verificar si la respuesta es exitosa
+        const data = await res.json();
         if (!res.ok) {
             throw new Error(`Error HTTP: ${res.status}`);
+        } else{
+            data.forEach(michi=> {
+                const section= document.getElementById('favorite-michis')
+                const article = document.createElement('article');
+                const img = document.createElement('img');
+                const btn = document.createElement('button');
+                const btntext = document.createTextNode('Quitar de ⭐');
+                
+                img.src= michi.image.url
+                btn.appendChild(btntext);
+                btn.onclick = () => deleteFavoriteMichi(michi.id);
+                article.appendChild(img);
+                article.appendChild(btn);
+                section.appendChild(article);
+            });
         }
-
-        const data = await res.json();
         console.log('Favoritos', data);
 
     } catch (error) {
@@ -47,34 +71,37 @@ async function loadFavoriteMichis() {
     }
 }
 
-async function saveFavoriteMichis() {
-    const res = await fetch (API_URL_FAVORITES, {
-        method: 'POST',
-        headers:{
-            'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-            image_id:'rh'
-        }),
+async function saveFavoriteMichi(id) {
+    const res = await fetch(API_URL_FAVORITES, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+    },
+      body: JSON.stringify({
+        image_id: id
+      }),
     });
-
-    // Verificar el tipo de contenido
-    const contentType = res.headers.get('Content-Type');
-
-    let data;
-    if (contentType && contentType.includes('application/json')) {
-        data = await res.json(); // Si es JSON, lo parseamos
+    const data = await res.json();
+  
+    console.log('Save')
+    console.log(res)
+  
+    if (res.status !== 200) {
+      spanError.innerHTML = "Hubo un error: " + res.status + data.message;
     } else {
-        data = await res.text(); // Si es texto, obtenemos el texto
-        console.log('Texto plano de la respuesta:', data);
+      console.log('Michi guardado en favoritos')
     }
+  }
 
-    console.log('Save');
-    console.log(res);
-
+async function deleteFavoriteMichi(id) {
+    const res = await fetch (URL_DELETE(id), {
+        method: 'DELETE',
+    });
+    const data = await res.json();
     if (res.status !== 200) {
         spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data);
+    } else {
+        console.log('Michi eliminado de favoritos', data);
     }
 }
 
