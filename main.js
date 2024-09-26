@@ -1,8 +1,10 @@
-const URL_RANDOM='https://api.thecatapi.com/v1/images/search?limit=3&api_key=live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd';
+const URL_RANDOM='https://api.thecatapi.com/v1/images/search?limit=3';
 
-const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites?&api_key=live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd';
+const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites';
 
-const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}?api_key=live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd`;
+const API_URL_UPLOAD = 'https://api.thecatapi.com/v1/images/upload';
+
+const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}`;
 
 const spanError = document.getElementById('error')
 
@@ -37,20 +39,27 @@ async function loadRandomMichis(){
 }
 
 async function loadFavoriteMichis() {
-    try {
-        const res = await fetch(API_URL_FAVORITES, {
+        const res = await fetch (API_URL_FAVORITES, {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
                 'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
-            }
+            },
         });
-        // Verificar si la respuesta es exitosa
         const data = await res.json();
-        if (!res.ok) {
-            throw new Error(`Error HTTP: ${res.status}`);
+
+        if (res.status !== 200) {
+            spanError.innerHTML="Hubo un error: "+ res.status + data.message;
         } else{
+            const section= document.getElementById('favorite-michis')
+            section.innerHTML="";
+
+            const h2 = document.createElement('h2');
+            const h2Text = document.createTextNode('Michis Favoritos');
+            h2.appendChild(h2Text);
+            section.appendChild(h2);
+
             data.forEach(michi=> {
-                const section= document.getElementById('favorite-michis')
                 const article = document.createElement('article');
                 const img = document.createElement('img');
                 const btn = document.createElement('button');
@@ -66,16 +75,15 @@ async function loadFavoriteMichis() {
         }
         console.log('Favoritos', data);
 
-    } catch (error) {
-        console.log('Error al obtener la imagen del gato favorito:', error);
-    }
-}
+    } 
+
 
 async function saveFavoriteMichi(id) {
     const res = await fetch(API_URL_FAVORITES, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
     },
       body: JSON.stringify({
         image_id: id
@@ -90,20 +98,50 @@ async function saveFavoriteMichi(id) {
       spanError.innerHTML = "Hubo un error: " + res.status + data.message;
     } else {
       console.log('Michi guardado en favoritos')
+      loadFavoriteMichis();
     }
   }
 
 async function deleteFavoriteMichi(id) {
     const res = await fetch (URL_DELETE(id), {
         method: 'DELETE',
+        headers:{
+            'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
+        }
     });
     const data = await res.json();
     if (res.status !== 200) {
         spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data);
     } else {
         console.log('Michi eliminado de favoritos', data);
+        loadFavoriteMichis();
     }
 }
 
-loadRandomMichis();
+async function uploadMichiFoto() {
+    const form = document.getElementById('uploadingForm');
+    const formData = new FormData(form);
+
+    console.log(formData.get('file'))
+
+    const res = await fetch(API_URL_UPLOAD,{
+        method:'POST',
+        headers:{
+            'x-api-key': 'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
+        },
+        body: formData,
+    })
+    const data = await res.json();
+
+    if (res.status !== 201) {
+        spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data);
+    } else {
+        console.log('Foto de michi subida ');
+        console.log({data})
+        console.log(data.url)
+        saveFavoriteMichi(data.id);
+    }
+}
+
+loadRandomMichis();    
 loadFavoriteMichis();
