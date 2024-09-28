@@ -118,6 +118,21 @@ async function deleteFavoriteMichi(id) {
     }
 }
 
+const fileInput = document.getElementById('file');
+const thumbnail = document.getElementById('thumbnail');
+
+// Escuchar el cambio en el input de tipo file para generar la miniatura
+fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+
+    // Verificar si se seleccionó un archivo
+    if (file) {
+        // Crear una URL de objeto temporal para mostrar la imagen
+        const objectURL = URL.createObjectURL(file);
+        thumbnail.src = objectURL;
+    }
+});
+
 async function uploadMichiFoto() {
     const form = document.getElementById('uploadingForm');
     const formData = new FormData(form);
