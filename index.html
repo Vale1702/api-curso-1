@@ -11,7 +11,9 @@
     <h1>MichiAPP</h1>
     <span id="error"></span>
     <section class="container">
-        <h2> Gatitos Aleatorios</h2>
+        <div>
+            <h2> Gatitos Aleatorios</h2>
+        </div>
         <button id="reloadButton"> 
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -19,9 +21,10 @@
             <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
           </svg>
         </button>
-        <article>
-            <img  id="img1" alt="foto de gatito"> 
-            <button id="btn1">
+        <div class=" container-article">
+            <article>
+                <img  id="img1" alt="foto de gatito"> 
+                <button id="btn1">
                 💚
             </button>
         </article>
@@ -37,7 +40,14 @@
                 💚
             </button>        
         </article>
+        <article>
+            <img  id="img4" alt="foto de gatito"> 
+            <button id="btn4">
+                💚
+            </button>        
+        </article>
         
+    </div>
     </section>
     
     <section id="uploadingMichi" class="uploading">
@@ -57,7 +67,9 @@
                 </button>
                 </div>
         </form>
+        <article>
             <img id="thumbnail" class="imgMiniatura" alt="Miniatura de la imagen">
+        </article>
     </section>
 
     <section id="favorite-michis">

@@ -4,7 +4,7 @@ const api = axios.create({
 
 api.defaults.headers.common['x-api-key']='live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd';
 
-const URL_RANDOM='https://api.thecatapi.com/v1/images/search?limit=3';
+const URL_RANDOM='https://api.thecatapi.com/v1/images/search?limit=4';
 
 const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites';
 
@@ -169,3 +169,6 @@ async function uploadMichiFoto() {
 
 loadRandomMichis();    
 loadFavoriteMichis();
+
+
+const id = `${Math.random}`
