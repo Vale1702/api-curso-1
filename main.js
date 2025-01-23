@@ -14,32 +14,45 @@ const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}`;
 
 const spanError = document.getElementById('error')
 
-async function loadRandomMichis(){
-    try{
-        const res = await fetch (URL_RANDOM);
-        const data = await res.json();
+async function loadRandomMichis() {
+    try {
+        // Realizamos una solicitud a la API para obtener datos de gatos aleatorios
+        const res = await fetch(URL_RANDOM); 
+        const data = await res.json(); // Parseamos la respuesta a formato JSON
 
-        console.log ('Random', data)
+        console.log('Random', data); // Mostramos los datos obtenidos en la consola para depuración
+
+        // Obtenemos las referencias de las imágenes por sus IDs
         const img1 = document.getElementById('img1');
         const img2 = document.getElementById('img2');
         const img3 = document.getElementById('img3');
+        const img4 = document.getElementById('img4');
 
+        // Obtenemos las referencias de los botones por sus IDs
         const btn1 = document.getElementById('btn1');
         const btn2 = document.getElementById('btn2');
         const btn3 = document.getElementById('btn3');
+        const btn4 = document.getElementById('btn4');
         
-        img1.src = data [0].url;
-        img2.src = data [1].url;
-        img3.src = data [2].url;
+        // Asignamos las URLs de las imágenes obtenidas de la API a los elementos <img>
+        img1.src = data[0].url;
+        img2.src = data[1].url;
+        img3.src = data[2].url;
+        img4.src = data[3].url;
 
+        // Asignamos eventos de clic a cada botón para guardar un gato favorito
+        // Al hacer clic, se llama a la función saveFavoriteMichi con el ID del gato correspondiente
         btn1.onclick = () => saveFavoriteMichi(data[0].id);
         btn2.onclick = () => saveFavoriteMichi(data[1].id);
         btn3.onclick = () => saveFavoriteMichi(data[2].id);
+        btn4.onclick = () => saveFavoriteMichi(data[3].id);
 
-        document.getElementById('reloadButton').onclick= function(){
-        location.reload();
-        }
-    } catch (error){
+        // Asignamos un evento de clic al botón de recarga para recargar la página
+        document.getElementById('reloadButton').onclick = function () {
+            location.reload(); // Recargamos la página para obtener nuevos gatos
+        };
+    } catch (error) {
+        // Capturamos e informamos cualquier error que ocurra durante la ejecución
         console.log('Error al obtener la imagen del gato:', error);
     }
 }
