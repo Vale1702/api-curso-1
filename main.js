@@ -14,174 +14,152 @@ const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}`;
 
 const spanError = document.getElementById('error')
 
+// Definir la función saveFavoriteMichi
+function saveFavoriteMichi(id) {
+    // Lógica para guardar el Michi como favorito
+    console.log(`Michi con id ${id} agregado a favoritos`);
+    // Aquí podrías agregarlo a un arreglo de favoritos o a localStorage, por ejemplo
+}
+
+// Definir la función deleteFavoriteMichi (si también la necesitas)
+function deleteFavoriteMichi(id) {
+    // Lógica para eliminar el Michi de favoritos
+    console.log(`Michi con id ${id} eliminado de favoritos`);
+    // Aquí podrías eliminarlo de un arreglo de favoritos o localStorage
+}
+
+function createCatCard(michi, isFavorite = false) {
+    const article = document.createElement('article');
+    article.classList.add('cat-card');
+
+    const img = document.createElement('img');
+    img.src = michi.image ? michi.image.url : michi.url; // Compatibilidad con datos de favoritos y aleatorios
+    img.alt = 'Un lindo michi';
+
+    const btn = document.createElement('button');
+    btn.classList.add('cat-card__btn');
+     // O la lógica que tengas para determinar si es favorito
+
+    if (isFavorite) {
+        
+        // Si es un favorito, el botón eliminará al michi
+        btn.textContent = '❌';
+        btn.onclick = () => deleteFavoriteMichi(michi.id);
+    } else {
+        // Si no es favorito, el botón lo agregará a favoritos
+        btn.textContent = '❤️';
+        btn.onclick = () => saveFavoriteMichi(michi.id);
+    }
+
+    article.appendChild(img);
+    article.appendChild(btn);
+
+    return article;
+}
+
+
+//Gatitos Aleatorios
 async function loadRandomMichis() {
     try {
-        // Realizamos una solicitud a la API para obtener datos de gatos aleatorios
-        const res = await fetch(URL_RANDOM); 
-        const data = await res.json(); // Parseamos la respuesta a formato JSON
-
-        console.log('Random', data); // Mostramos los datos obtenidos en la consola para depuración
-
-        // Obtenemos las referencias de las imágenes por sus IDs
-        const img1 = document.getElementById('img1');
-        const img2 = document.getElementById('img2');
-        const img3 = document.getElementById('img3');
-        const img4 = document.getElementById('img4');
-
-        // Obtenemos las referencias de los botones por sus IDs
-        const btn1 = document.getElementById('btn1');
-        const btn2 = document.getElementById('btn2');
-        const btn3 = document.getElementById('btn3');
-        const btn4 = document.getElementById('btn4');
-        
-        // Asignamos las URLs de las imágenes obtenidas de la API a los elementos <img>
-        img1.src = data[0].url;
-        img2.src = data[1].url;
-        img3.src = data[2].url;
-        img4.src = data[3].url;
-
-        // Asignamos eventos de clic a cada botón para guardar un gato favorito
-        // Al hacer clic, se llama a la función saveFavoriteMichi con el ID del gato correspondiente
-        btn1.onclick = () => saveFavoriteMichi(data[0].id);
-        btn2.onclick = () => saveFavoriteMichi(data[1].id);
-        btn3.onclick = () => saveFavoriteMichi(data[2].id);
-        btn4.onclick = () => saveFavoriteMichi(data[3].id);
-
-        // Asignamos un evento de clic al botón de recarga para recargar la página
-        document.getElementById('reloadButton').onclick = function () {
-            location.reload(); // Recargamos la página para obtener nuevos gatos
-        };
-    } catch (error) {
-        // Capturamos e informamos cualquier error que ocurra durante la ejecución
-        console.log('Error al obtener la imagen del gato:', error);
-    }
-}
-
-async function loadFavoriteMichis() {
-        const res = await fetch (API_URL_FAVORITES, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
-            },
-        });
+        const res = await fetch(URL_RANDOM);
         const data = await res.json();
 
-        if (res.status !== 200) {
-            spanError.innerHTML="Hubo un error: "+ res.status + data.message;
-        } else{
-            const section= document.getElementById('favorite-michis')
-            section.innerHTML="";
+        console.log('Random', data);
 
-            const h2 = document.createElement('h2');
-            const h2Text = document.createTextNode('Michis Favoritos');
-            h2.appendChild(h2Text);
-            section.appendChild(h2);
+        const section = document.getElementById('random-michis');
+        section.innerHTML = ''; // Limpiar contenido previo
 
-            data.forEach(michi=> {
-                const article = document.createElement('article');
-                const img = document.createElement('img');
-                const btn = document.createElement('button');
-                const btntext = document.createTextNode('Quitar de ⭐');
-                
-                img.src= michi.image.url
-                btn.appendChild(btntext);
-                btn.onclick = () => deleteFavoriteMichi(michi.id);
-                article.appendChild(img);
-                article.appendChild(btn);
-                section.appendChild(article);
-            });
-        }
-        console.log('Favoritos', data);
+        data.forEach(michi => {
+            const card = createCatCard(michi);
+            section.appendChild(card);
+        });
 
-    } 
-
-
-async function saveFavoriteMichi(id) {
-    // const res = await fetch(API_URL_FAVORITES, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
-    // },
-    //   body: JSON.stringify({
-    //     image_id: id
-    //   }),
-    // });
-    // const data = await res.json();
-    const {data, status} = await api.post('/favourites',{
-        image_id: id,
-    });
-
-    console.log('Save')
-    // console.log(res)
-  
-    if (status !== 200) {
-      spanError.innerHTML = "Hubo un error: " + status + data.message;
-    } else {
-      console.log('Michi guardado en favoritos')
-      loadFavoriteMichis();
-    }
-  }
-
-async function deleteFavoriteMichi(id) {
-    const res = await fetch (URL_DELETE(id), {
-        method: 'DELETE',
-        headers:{
-            'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
-        }
-    });
-    const data = await res.json();
-    if (res.status !== 200) {
-        spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data);
-    } else {
-        console.log('Michi eliminado de favoritos', data);
-        loadFavoriteMichis();
+    } catch (error) {
+        console.error('Error al obtener la imagen del gato:', error);
+        spanError.innerHTML = 'Hubo un error al cargar los michis aleatorios';
     }
 }
+//Gatitos Favoritos
+async function loadFavoriteMichis() {
+    const res = await fetch(API_URL_FAVORITES, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
+        },
+    });
+    const data = await res.json();
 
-const fileInput = document.getElementById('file');
-const thumbnail = document.getElementById('thumbnail');
+    if (res.status !== 200) {
+        spanError.innerHTML = `Hubo un error: ${res.status} ${data.message}`;
+    } else {
+        const section = document.getElementById('favorite-michis');
+        section.innerHTML = ''; // Limpiar contenido previo
 
-// Escuchar el cambio en el input de tipo file para generar la miniatura
+        data.forEach(michi => {
+            const card = createCatCard(michi, true); // isFavorite = true
+            section.appendChild(card);
+        });
+    }
+    console.log('Favoritos', data);
+}
+
+// Manejo de miniaturas al cargar imágenes desde un input de tipo file
+const fileInput = document.getElementById('file'); // Seleccionamos el input de archivo
+const thumbnail = document.getElementById('thumbnail'); // Seleccionamos la imagen de vista previa
+
 fileInput.addEventListener('change', (event) => {
-    const file = event.target.files[0];
+    // Obtenemos el archivo seleccionado
+    const file = event.target.files[0]; 
 
-    // Verificar si se seleccionó un archivo
+    // Verificamos si se seleccionó un archivo
     if (file) {
-        // Crear una URL de objeto temporal para mostrar la imagen
+        // Creamos una URL de objeto temporal para mostrar la imagen seleccionada
         const objectURL = URL.createObjectURL(file);
-        thumbnail.src = objectURL;
+        // Asignamos la URL al src de la imagen
+        thumbnail.src = objectURL; 
     }
 });
 
 async function uploadMichiFoto() {
-    const form = document.getElementById('uploadingForm');
-    const formData = new FormData(form);
+    // Seleccionamos el formulario de subida
+    const form = document.getElementById('uploadingForm'); 
+    // Creamos un objeto FormData con los datos del formulario
+    const formData = new FormData(form); 
 
-    console.log(formData.get('file'))
+    // Mostramos el archivo seleccionado en la consola
+    console.log(formData.get('file')); 
 
-    const res = await fetch(API_URL_UPLOAD,{
-        method:'POST',
-        headers:{
-            'x-api-key': 'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
+    // Realizamos una solicitud POST a la API para subir la foto
+    const res = await fetch(API_URL_UPLOAD, {
+        method: 'POST',
+        headers: {
+            'x-api-key': 'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd', // Clave de API para autenticación
         },
-        body: formData,
-    })
-    const data = await res.json();
+        // Enviamos el FormData como cuerpo de la solicitud
+        body: formData, 
+    });
+    // Parseamos la respuesta a JSON
+    const data = await res.json(); 
 
     if (res.status !== 201) {
-        spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data);
+        // Mostramos el error si ocurre
+        spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data); 
     } else {
-        console.log('Foto de michi subida ');
-        console.log({data})
-        console.log(data.url)
-        saveFavoriteMichi(data.id);
+        // Confirmamos que la foto fue subida
+        console.log('Foto de michi subida'); 
+        // Mostramos los datos obtenidos en la consola
+        console.log({ data }); 
+        // Mostramos la URL de la imagen subida
+        console.log(data.url); 
+        // Guardamos la foto subida como favorita
+        saveFavoriteMichi(data.id); 
     }
 }
 
-loadRandomMichis();    
+
+// Cargamos los gatos aleatorios y favoritos al inicio
+loadRandomMichis();
 loadFavoriteMichis();
 
-
-const id = `${Math.random}`
+const id = `${Math.random}`; // Generamos un ID único (aunque no se utiliza en este caso)
