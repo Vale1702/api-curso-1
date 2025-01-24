@@ -14,20 +14,40 @@ const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}`;
 
 const spanError = document.getElementById('error')
 
-// Definir la función saveFavoriteMichi
-function saveFavoriteMichi(id) {
-    // Lógica para guardar el Michi como favorito
-    console.log(`Michi con id ${id} agregado a favoritos`);
-    // Aquí podrías agregarlo a un arreglo de favoritos o a localStorage, por ejemplo
-}
+// Guardar Favoritos
 
-// Definir la función deleteFavoriteMichi (si también la necesitas)
-function deleteFavoriteMichi(id) {
-    // Lógica para eliminar el Michi de favoritos
-    console.log(`Michi con id ${id} eliminado de favoritos`);
-    // Aquí podrías eliminarlo de un arreglo de favoritos o localStorage
-}
+async function saveFavoriteMichi(id) {
+    const {data, status} = await api.post('/favourites',{
+        image_id: id,
+    });
 
+    console.log('Save')
+    // console.log(res)
+  
+    if (status !== 200) {
+      spanError.innerHTML = "Hubo un error: " + status + data.message;
+    } else {
+      console.log('Michi guardado en favoritos')
+      loadFavoriteMichis();
+    }
+  }
+//Eliminar Favoritos
+async function deleteFavoriteMichi(id) {
+    const res = await fetch (URL_DELETE(id), {
+        method: 'DELETE',
+        headers:{
+            'x-api-key':'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd',
+        }
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data);
+    } else {
+        console.log('Michi eliminado de favoritos', data);
+        loadFavoriteMichis();
+    }
+}
+//Creacion de Cards
 function createCatCard(michi, isFavorite = false) {
     const article = document.createElement('article');
     article.classList.add('cat-card');
@@ -56,7 +76,6 @@ function createCatCard(michi, isFavorite = false) {
 
     return article;
 }
-
 
 //Gatitos Aleatorios
 async function loadRandomMichis() {
