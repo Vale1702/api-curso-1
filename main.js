@@ -61,7 +61,6 @@ function createCatCard(michi, isFavorite = false) {
      // O la lógica que tengas para determinar si es favorito
 
     if (isFavorite) {
-        
         // Si es un favorito, el botón eliminará al michi
         btn.textContent = '❌';
         btn.onclick = () => deleteFavoriteMichi(michi.id);
