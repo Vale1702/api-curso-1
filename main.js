@@ -15,7 +15,6 @@ const URL_DELETE = (id) =>`https://api.thecatapi.com/v1/favourites/${id}`;
 const spanError = document.getElementById('error')
 
 // Guardar Favoritos
-
 async function saveFavoriteMichi(id) {
     const {data, status} = await api.post('/favourites',{
         image_id: id,

@@ -1,13 +1,12 @@
 * { box-sizing: border-box; }
 
 body {
-    background:linear-gradient(180deg, rgb(10, 157, 248) -15.73%, rgba(0, 0, 0) 28.17%);
-    /* background-color: var(--blue-medium-3); */
-    font-family: var(--font-family-text);
-    font-weight: var(--font-weight-text1);
-    font-size: 16px;
-    margin: 4px 0 0 0;
-    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--blue-light-1);
+    color: var(--blue-dark-2);
+    text-align: center;
+    margin: 0;
+    padding: 20px;
   }
 
 :root {
@@ -19,15 +18,6 @@ body {
     --blue-dark-1: #0b174d;
     --blue-dark-2: #011928;
   
-    --yellow: #f2e85f;
-    --green: #a0db7b;
-    --aqua: #89ebde;
-    --lightBlue: #a2d1ee;
-    --darkBlue: #8596db;
-    --red: #F09D9D;
-  
-    --font-family-titles: 'Dosis', sans-serif;
-    --font-family-text: 'Red Hat Display', sans-serif;
     --font-weight-title1: 800;
     --font-weight-title2: 700;
     --font-weight-text1: 400;
@@ -35,38 +25,34 @@ body {
   }
 
 h1, h2{
-    text-align: center;
-    padding: 0;
-}
-
-h1, h2{
-    font-size: 24px;
-    color: var(--blue-medium-1);
+    color: #3498db;
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 .container {
-    border: 8px solid #4b3570;
+    /* border: 5px solid #4b3570; */
     border-radius: 20px;
     padding: 10px;
 }
 
-#reloadButton{
-    width: 50px;
-    height: 50px;
-    background-color: #9076bd;
-    padding: 0;
-    margin: 5px 15px;
+#reloadButton {
+    background-color: var(--blue-dark-1);
+    color: #d9dbe0;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
 }
 
-.container button{
-    border-radius: 20px;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    background-color: transparent ;
-    border:  solid 2px greenyellow;
-    /* border: solid 2px red; */
-} 
+#reloadButton:hover {
+    background-color: var(--blue-medium-3);
+}
+
 .container-article{
     display: grid;
     gap: 25px;
@@ -75,124 +61,101 @@ h1, h2{
     place-items: center;
 }
 
-#favorite-michis{
-    position: relative;
-    display: grid;
-    gap: 25px;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, 150px);
-    border: 8px solid #6f2f6f;
-    place-items: center;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 20px;
-}
-/* Boton de me gusta */
- #favorite-michis button{
-    position: absolute;
-    border-radius: 20px ;
-    border: solid 2px rgb(0, 174, 255);
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
-    cursor: pointer;
-    top: 10px;
-    right: 10px;
-} 
-
-#favorite-michis button:hover{
-    background-color: var(--blue-medium-1);
-    box-shadow: 0px 0px 10px 2px var(--darkBlue);
-}
-
 .cat-section {
     display: grid;
     gap: 25px;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, 150px);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     margin-top: 20px;
+    max-width: 900px;
+    margin: 20px auto;
 }
 
 .cat-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    width: 150px;
+    border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     position: relative;
+    transition: transform 0.3s ease;
+    position: relative;
+}
 
+.cat-card:hover{
+    transform: translateY(-5px);
 }
 
 .cat-card img {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 20px;
-    margin-top: 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 150px);
+    /* border:  solid 5px red; */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
 .cat-card__btn {
-   
+    position: absolute;
+    bottom: 10px;
+    left: 80%;
+    transform: translateY(-470%);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .cat-card__btn:hover {
-    background-color: var(--blue-medium-1);
-    box-shadow: 0px 0px 10px 2px var(--darkBlue);
+    background-color: transparent ;
+    box-shadow: 0px 4px 8px var(--blue-dark-1);
 }
-
-
 
 .uploading{
     border: #9076bd dashed 5px;
-    margin-top: 10px;
+    margin-top: 15px;
     border-radius: 15px;
-    padding: 15px;
     text-align: center;
     height: 250px;
     display: grid;
-    gap: 25px;
+    gap: 20px;
     justify-content: center;
-    grid-template-columns: repeat(auto-fit, 90px);
+    grid-template-columns: repeat(auto-fit, 140px);
     place-items: center;
 }
 
 .uploading button{
-    background-color: #9076bd;
-    border-radius: 5px;
+    background-color: var(--blue-dark-1);
+    border-radius: 10px;
     width: 150px;
     height: 40px;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--blue-light-2);
     font-family:monospace;  
     font-size: 18px;
     margin-top: 10px;
 }
 
 .inputfile{
-    color: #d4c1f5;
-    font-size: 18px;
+    color: var(--blue-medium-2);
+    font-size: 14px;
+    text-align: center;
+    padding: 5px;
 }
 
-.inputfile-5 + label {
-    color: #9076bd;
-}
 
 .inputfile-5:focus + label,
 .inputfile-5.has-focus + label,
 .inputfile-5 + label:hover {
-    color: #765ca3;
+
 }
 
 .inputfile-5 + label figure {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #9076bd;
+    background-color: var(--blue-dark-1);
     display: block;
     padding: 20px;
     margin: 0 auto 10px;
@@ -201,7 +164,7 @@ h1, h2{
 .inputfile-5:focus + label figure,
 .inputfile-5.has-focus + label figure,
 .inputfile-5 + label:hover figure {
-    background-color: #765ca3;
+    background-color: var(--blue-medium-3);
 }
 
 .inputfile-5 + label svg {
@@ -213,9 +176,9 @@ h1, h2{
 .imgMiniatura{
     width: 150px; 
     height: 150px;
-    border: 5px white;
-    place-self: end;
     margin: 5px;
+    object-fit: cover;
+    border-radius: 25px;
 }
 
 /* Degradado en el fondo */
