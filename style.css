@@ -1,27 +1,203 @@
-.container{
-    display: grid;
-    place-items: center;
-    border: 5px solid #4b3570;
-    width: 50%;
-    height: 50%;
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--blue-light-1);
+    color: var(--blue-dark-2);
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+
+:root {
+    --white-1: #f0f0f0;
+    --white-2: #dcdcdc;
+    --blue-medium-1: #67bde8;
+    --blue-medium-2: #488bbf;
+    --blue-medium-3: #077fc7;
+    --blue-dark-1: #0b174d;
+    --blue-dark-2: #011928;
+    --grey-dark-1: #2c3e50 ;
+    --purple-light-1: #8e44ad;
+    --purple-medium-1: #732d91;
+    --purple-dark-1: #6c3483;
+    --red-light-1:#e74c3c;
+    --red-medium-1: #c0392b;
+    
+    --font-weight-title1: 800;
+    --font-weight-title2: 700;
+    --font-weight-text1: 400;
+    --font-weight-text2: 500;
+  }
+
+h1, h2{
+    color: #3498db;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.container {
+    border-radius: 20px;
     padding: 10px;
-    margin: auto;
 }
 
+#reloadButton {
+    background-color: var(--blue-dark-1);
+    color: var(--white-2);
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
+}
 
-.container img{
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+#reloadButton:hover {
+    background-color: var(--blue-medium-3);
+}
+
+.container-article{
+    display: grid;
+    gap: 25px;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, 150px);
+    place-items: center;
+}
+
+.cat-section {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin-top: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.cat-card {
     border-radius: 15px;
-    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease;
+    position: relative;
 }
 
-.container button{
-    border-radius: 5px;
-    width: 100px;
-    height: 30px;
-    font-size: 18px;
-    background-color: #4b3570;
-    color: antiquewhite;
+.cat-card:hover{
+    transform: translateY(-5px);
+}
+
+.cat-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.cat-card__btn {
+    position: absolute;
+    bottom: 10px;
+    left: 80%;
+    transform: translateY(-470%);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cat-card__btn:hover {
+    background-color: transparent ;
+    box-shadow: 0px 4px 8px var(--blue-dark-1);
+}
+
+.upload-container {
+    border: 3px dashed #8e44ad;
+    margin-top: 15px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    max-width: 400px;
+    margin: auto;
+    transition: 0.3s;
+}
+
+.upload-container:hover {
+    border-color: var(--purple-dark-1);
+}
+
+.drop-area {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--white-1);
+    transition: 0.3s;
+}
+
+.drop-area.dragover {
+    background-color: var(--white-2);
+    border: 2px solid var(--purple-dark-1);
+}
+
+.file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.file-label figure {
+    width: 80px;
+    height: 80px;
+    background-color: var(--purple-light-1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.file-label figure:hover {
+    background-color: var(--purple-medium-1);
+}
+
+.file-label svg {
+    fill: #fff;
+}
+
+.btn-upload, .btn-delete {
+    background-color: var(--purple-light-1);
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: var(--white-1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+    display: none;
+}
+
+.btn-delete{
+    background-color: var(--red-light-1);
+}
+
+.btn-upload:hover {
+    background-color: var(--purple-light-1);
+}
+.btn-delete:hover {
+    background-color: var(--red-medium-1);
+}
+
+.imgMiniatura {
+    width: 250px;
+    height: 160px;
+    margin-top: 10px;
+    object-fit: cover;
+    border-radius: 10px;
 }
