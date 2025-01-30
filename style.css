@@ -2,8 +2,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--blue-light-1);
-    color: var(--blue-dark-2);
+    color: var(--blue-dark-1);
     text-align: center;
     margin: 0;
     padding: 20px;
@@ -12,40 +11,41 @@ body {
 :root {
     --white-1: #f0f0f0;
     --white-2: #dcdcdc;
-    --blue-medium-1: #67bde8;
+    --blue-light: #67bde8;
     --blue-medium-2: #488bbf;
     --blue-medium-3: #077fc7;
     --blue-dark-1: #0b174d;
-    --blue-dark-2: #011928;
     --grey-dark-1: #2c3e50 ;
-    --purple-light-1: #8e44ad;
-    --purple-medium-1: #732d91;
-    --purple-dark-1: #6c3483;
-    --red-light-1:#e74c3c;
-    --red-medium-1: #c0392b;
-    
-    --font-weight-title1: 800;
-    --font-weight-title2: 700;
-    --font-weight-text1: 400;
-    --font-weight-text2: 500;
+    --purple-light: #8e44ad;
+    --purple-medium: #732d91;
+    --purple-dark: #6c3483;
+    --red-light:#e74c3c;
+    --red-medium: #c0392b;
   }
 
-h1, h2{
-    color: #3498db;
+h1{
     font-size: 2rem;
+    font-weight: 800;
     margin-bottom: 10px;
+    color: var(--blue-dark-1);
 }
 
-.container {
+h2{
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: var(--blue-medium-3);
+}
+
+.container-header {
     border-radius: 20px;
-    padding: 10px;
+    padding: 20px;
 }
 
 #reloadButton {
-    background-color: var(--blue-dark-1);
+    background-color: var(--purple-light);
     color: var(--white-2);
     border: none;
-    padding: 15px;
+    padding: 10px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 20px;
@@ -55,22 +55,13 @@ h1, h2{
 }
 
 #reloadButton:hover {
-    background-color: var(--blue-medium-3);
-}
-
-.container-article{
-    display: grid;
-    gap: 25px;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, 150px);
-    place-items: center;
+    background-color: var(--purple-dark);
 }
 
 .cat-section {
     display: grid;
     gap: 25px;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    margin-top: 20px;
     max-width: 900px;
     margin: 20px auto;
 }
@@ -85,7 +76,7 @@ h1, h2{
 }
 
 .cat-card:hover{
-    transform: translateY(-5px);
+    transform: translateY(-10px);
 }
 
 .cat-card img {
@@ -112,24 +103,22 @@ h1, h2{
 }
 
 .cat-card__btn:hover {
-    background-color: transparent ;
-    box-shadow: 0px 4px 8px var(--blue-dark-1);
+background-color: var(--white-1);    
+box-shadow: 0px 4px 8px var(--blue-light);
 }
 
 .upload-container {
-    border: 3px dashed #8e44ad;
-    margin-top: 15px;
+    border: 3px dashed var(--purple-light);
     border-radius: 15px;
     text-align: center;
     padding: 20px;
-    background-color: #fff;
     max-width: 400px;
     margin: auto;
     transition: 0.3s;
 }
 
 .upload-container:hover {
-    border-color: var(--purple-dark-1);
+    border-color: var(--purple-dark);
 }
 
 .drop-area {
@@ -141,7 +130,7 @@ h1, h2{
 
 .drop-area.dragover {
     background-color: var(--white-2);
-    border: 2px solid var(--purple-dark-1);
+    border: 2px solid var(--purple-dark);
 }
 
 .file-label {
@@ -154,7 +143,7 @@ h1, h2{
 .file-label figure {
     width: 80px;
     height: 80px;
-    background-color: var(--purple-light-1);
+    background-color: var(--purple-light);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -163,7 +152,7 @@ h1, h2{
 }
 
 .file-label figure:hover {
-    background-color: var(--purple-medium-1);
+    background-color: var(--purple-medium);
 }
 
 .file-label svg {
@@ -171,7 +160,7 @@ h1, h2{
 }
 
 .btn-upload, .btn-delete {
-    background-color: var(--purple-light-1);
+    background-color: var(--purple-light);
     border: none;
     padding: 10px 15px;
     font-size: 16px;
@@ -184,14 +173,14 @@ h1, h2{
 }
 
 .btn-delete{
-    background-color: var(--red-light-1);
+    background-color: var(--red-light);
 }
 
 .btn-upload:hover {
-    background-color: var(--purple-light-1);
+    background-color: var(--purple-light);
 }
 .btn-delete:hover {
-    background-color: var(--red-medium-1);
+    background-color: var(--red-medium);
 }
 
 .imgMiniatura {

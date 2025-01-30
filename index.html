@@ -9,28 +9,24 @@
 </head>
 <body>
     
-    <h1>MichiAPP</h1>
-
-    <span id="error"></span>
-
-    <section class="container">
-        <div>
+    <header class="container-header" >
+        <span id="error"></span>
+        <h1>MichiAPP</h1>
             <h2> Gatitos Aleatorios</h2>
-        </div>
+            
+            <button id="reloadButton"> 
+                <p>Recargar Gatitos</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+                    <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+                </svg>
+            </button>
+        </header>
 
-        <button id="reloadButton"> 
-            <p>Recargar Gatitos</p>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-            <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-          </svg>
-        </button>
-        
-        <section id='random-michis' class="cat-section">        
-            <!-- <h2>Gatos aleatorios AQUI</h2> -->
+        <section id='random-michis' class="cat-section">
+            <!-- <img src="link de gatitos" alt=""> -->
         </section>
-    </section>
     
 
     <section id="uploadingMichi" class="upload-container">
@@ -63,11 +59,8 @@
     </section>
 
     
+    <h3>Gatos Favoritos</h3>
     <section id="favorite-michis" class="cat-section">
-    <div>
-        <h2>Favorites Cats</h2>
-    </div>
-            <h2>Gatos Favoritos</h2>
     </section>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

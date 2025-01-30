@@ -21,7 +21,6 @@ async function saveFavoriteMichi(id) {
     });
 
     console.log('Save')
-    // console.log(res)
   
     if (status !== 200) {
       spanError.innerHTML = "Hubo un error: " + status + data.message;
@@ -48,8 +47,8 @@ async function deleteFavoriteMichi(id) {
 }
 //Creacion de Cards
 function createCatCard(michi, isFavorite = false) {
-    const article = document.createElement('article');
-    article.classList.add('cat-card');
+    const card = document.createElement('article');
+    card.classList.add('cat-card');
 
     const img = document.createElement('img');
     img.src = michi.image ? michi.image.url : michi.url; // Compatibilidad con datos de favoritos y aleatorios
@@ -69,22 +68,28 @@ function createCatCard(michi, isFavorite = false) {
         btn.onclick = () => saveFavoriteMichi(michi.id);
     }
 
-    article.appendChild(img);
-    article.appendChild(btn);
+    card.appendChild(img);
+    card.appendChild(btn);
 
-    return article;
+    return card;
 }
 
 //Gatitos Aleatorios
+const reloadButton = document.getElementById('reloadButton');
+const error = document.getElementById('error');
+
 async function loadRandomMichis() {
     try {
         const res = await fetch(URL_RANDOM);
         const data = await res.json();
 
         console.log('Random', data);
+        if(!Array.isArray(data) || data.length === 0){
+            throw new Error ('La API no devolvio datos validos');
+        }
 
         const section = document.getElementById('random-michis');
-        section.innerHTML = ''; // Limpiar contenido previo
+            section.innerHTML = ''; // Limpiar contenido previo
 
         data.forEach(michi => {
             const card = createCatCard(michi);
@@ -96,6 +101,12 @@ async function loadRandomMichis() {
         spanError.innerHTML = 'Hubo un error al cargar los michis aleatorios';
     }
 }
+
+// Vincular el botón de recargar michis
+if(reloadButton){
+    reloadButton.addEventListener('click', loadRandomMichis);
+}
+
 //Gatitos Favoritos
 async function loadFavoriteMichis() {
     const res = await fetch(API_URL_FAVORITES, {
