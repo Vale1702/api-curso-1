@@ -122,55 +122,84 @@ async function loadFavoriteMichis() {
 }
 
 // Manejo de miniaturas al cargar imágenes desde un input de tipo file
-const fileInput = document.getElementById('file'); // Seleccionamos el input de archivo
-const thumbnail = document.getElementById('thumbnail'); // Seleccionamos la imagen de vista previa
+// Seleccionamos el input de archivo
+const fileInput = document.getElementById('file-input'); 
+const previewImg = document.getElementById('previewImg'); 
+const uploadBtn = document.querySelector('.btn-upload');
+const deleteBtn = document.querySelector(".btn-delete")
+const dropArea = document.getElementById('dropArea');
 
+// Manejo de selección de archivo
 fileInput.addEventListener('change', (event) => {
-    // Obtenemos el archivo seleccionado
-    const file = event.target.files[0]; 
+    const file = event.target.files[0];
+    showPreview(file);
+});
 
-    // Verificamos si se seleccionó un archivo
+// Función para mostrar la imagen en la vista previa
+function showPreview(file) {
     if (file) {
-        // Creamos una URL de objeto temporal para mostrar la imagen seleccionada
-        const objectURL = URL.createObjectURL(file);
-        // Asignamos la URL al src de la imagen
-        thumbnail.src = objectURL; 
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            previewImg.style.display = "inline-block";
+            uploadBtn.style.display = "inline-block";
+            deleteBtn.style.display = "inline-block";
+        };
+        reader.readAsDataURL(file);
     }
+}
+
+function removePreview(){
+    previewImg.src = "";
+    previewImg.style.display = "none";
+    uploadBtn.style.display = "none";
+    deleteBtn.style.display = "none";
+    fileInput.value = "";
+}
+
+// Manejo de arrastrar y soltar
+dropArea.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dropArea.classList.remove("dragover");
+    const file = event.dataTransfer.files[0];
+    fileInput.files = event.dataTransfer.files;
+    showPreview(file);
 });
 
 async function uploadMichiFoto() {
-    // Seleccionamos el formulario de subida
     const form = document.getElementById('uploadingForm'); 
-    // Creamos un objeto FormData con los datos del formulario
     const formData = new FormData(form); 
 
-    // Mostramos el archivo seleccionado en la consola
-    console.log(formData.get('file')); 
+    try {
+        const res = await fetch(API_URL_UPLOAD, {
+            method: 'POST',
+            headers: {
+                'x-api-key': 'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd', 
+            },
+            body: formData, 
+        });
 
-    // Realizamos una solicitud POST a la API para subir la foto
-    const res = await fetch(API_URL_UPLOAD, {
-        method: 'POST',
-        headers: {
-            'x-api-key': 'live_JhwdQVyHytfX6G94RW69DjvBwpa0PHGqMCvWhDRfWCBbOHu4J0J0R38pNKSjdJWd', // Clave de API para autenticación
-        },
-        // Enviamos el FormData como cuerpo de la solicitud
-        body: formData, 
-    });
-    // Parseamos la respuesta a JSON
-    const data = await res.json(); 
+        const data = await res.json();
 
-    if (res.status !== 201) {
-        // Mostramos el error si ocurre
-        spanError.innerHTML = "Hubo un error: " + res.status + (data.message ? data.message : data); 
-    } else {
-        // Confirmamos que la foto fue subida
-        console.log('Foto de michi subida'); 
-        // Mostramos los datos obtenidos en la consola
-        console.log({ data }); 
-        // Mostramos la URL de la imagen subida
-        console.log(data.url); 
-        // Guardamos la foto subida como favorita
-        saveFavoriteMichi(data.id); 
+        if (res.status !== 201) {
+            console.error("Error al subir: ", res.status, data.message);
+        } else {
+            console.log('Foto subida exitosamente', data);
+            console.log('URL de la imagen subida:', data.url);
+            saveFavoriteMichi(data.id);
+            removePreview();
+        }
+    } catch (error) {
+        console.error("Error de red:", error);
     }
 }
 
