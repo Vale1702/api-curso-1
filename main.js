@@ -132,21 +132,19 @@ async function loadFavoriteMichis() {
     console.log('Favoritos', data);
 }
 
-// Manejo de miniaturas al cargar imágenes desde un input de tipo file
-// Seleccionamos el input de archivo
 const fileInput = document.getElementById('file-input'); 
 const previewImg = document.getElementById('previewImg'); 
 const uploadBtn = document.querySelector('.btn-upload');
 const deleteBtn = document.querySelector(".btn-delete")
 const dropArea = document.getElementById('dropArea');
+const selectFileBtn = document.getElementById('selectFileBtn')
 
-// Manejo de selección de archivo
+selectFileBtn.addEventListener('click', ()=> fileInput.click());
 fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     showPreview(file);
 });
 
-// Función para mostrar la imagen en la vista previa
 function showPreview(file) {
     if (file) {
         const reader = new FileReader();
@@ -186,11 +184,27 @@ dropArea.addEventListener("drop", (event) => {
     showPreview(file);
 });
 
+const uploadMessage = document.getElementById('uploadMessage');
+
+function showMessage(){
+    uploadMessage.textContent='😽😻 Imagen subida Exitosamente!';
+    uploadMessage.classList.add('success-message');
+    uploadMessage.classList.remove('hidden');
+
+    setTimeout(()=> {
+        uploadMessage.style.display = 'none';
+    }, 3000)
+}
+
 async function uploadMichiFoto() {
+
     const form = document.getElementById('uploadingForm'); 
     const formData = new FormData(form); 
 
     try {
+        uploadBtn.innerHTML = 'Subiendo....';
+        uploadBtn.disable = true;
+
         const res = await fetch(API_URL_UPLOAD, {
             method: 'POST',
             headers: {
@@ -203,17 +217,19 @@ async function uploadMichiFoto() {
 
         if (res.status !== 201) {
             console.error("Error al subir: ", res.status, data.message);
+            uploadBtn.innerHTML= 'Error ❌';
+
         } else {
-            console.log('Foto subida exitosamente', data);
-            console.log('URL de la imagen subida:', data.url);
+            // console.log('Foto subida exitosamente', data);
+            showMessage();
             saveFavoriteMichi(data.id);
             removePreview();
+            console.log('URL de la imagen subida:', data.url);
         }
     } catch (error) {
         console.error("Error de red:", error);
     }
 }
-
 
 // Cargamos los gatos aleatorios y favoritos al inicio
 loadRandomMichis();
